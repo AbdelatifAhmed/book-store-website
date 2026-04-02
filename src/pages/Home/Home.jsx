@@ -32,7 +32,6 @@ const Home = () => {
     return (
         <div className="home-wrapper px-3 py-4">
 
-            {/* --- Section 1: Hero Section --- */}
             <section className="hero-section text-center py-5 mb-5" style={{ background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)', borderRadius: '20px' }}>
                 <Container>
                     <Row className="align-items-center py-5">
@@ -49,7 +48,6 @@ const Home = () => {
                 </Container>
             </section>
 
-            {/* --- Section 2: Features (Why Us) --- */}
             <section className="features-section py-5">
                 <Row className="text-center g-4">
                     <Col md={4}>
@@ -75,8 +73,6 @@ const Home = () => {
                     </Col>
                 </Row>
             </section>
-
-            {/* --- Section 3: Latest Books --- */}
             <section className="latest-books py-5">
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <h2 className="fw-bold">Latest Arrivals</h2>

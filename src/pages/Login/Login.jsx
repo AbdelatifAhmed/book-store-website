@@ -3,6 +3,7 @@ import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import { setCredentials } from '../../Slices/authSlices';
+import { useForm } from 'react-hook-form';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -19,22 +20,23 @@ const Login = () => {
     }
   }, [navigate, userInfo]);
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
+  const { register, handleSubmit, formState: { errors } } = useForm()
+
+  const submitHandler = async (data) => {
     try {
       const response = await fetch('http://localhost:5000/api/users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(data),
       });
 
-      const data = await response.json();
+      const  resData= await response.json();
 
       if (response.ok) {
-        dispatch(setCredentials(data));
+        dispatch(setCredentials(resData));
         navigate('/');
       } else {
-        alert(data.message || 'Invalid Email or Password');
+        alert(resData.message || 'Invalid Email or Password');
       }
     } catch (err) {
       console.error('Login Error:', err);
@@ -48,30 +50,32 @@ const Login = () => {
           <Card className="p-4 shadow-lg border-0" style={{ backgroundColor: '#1e293b', color: 'white' }}>
             <h2 className="text-center mb-4 fw-bold text-primary">Welcome Back</h2>
             <p className="text-center text-secondary small">Login to access your library</p>
-            
-            <Form onSubmit={submitHandler}>
+
+            <Form onSubmit={handleSubmit(data => submitHandler(data))}>
               <Form.Group className="mb-3" controlId="email">
                 <Form.Label>Email Address</Form.Label>
-                <Form.Control 
-                  type="email" 
-                  placeholder="name@example.com" 
+                <Form.Control
+                  type="email"
+                  placeholder="name@example.com"
                   className="bg-dark text-white border-secondary"
-                  value={email} 
-                  onChange={(e) => setEmail(e.target.value)} 
-                  required 
+                  {...register('email', { required: 'Email is required', pattern: { value: /^\S+@\S+$/i, message: 'Invalid email address' } })}
                 />
+                <Form.Text className="text-muted small fst-italic">
+                  {errors.email && <span className="text-danger">{errors.email.message}</span>}
+                </Form.Text>
               </Form.Group>
 
               <Form.Group className="mb-4" controlId="password">
                 <Form.Label>Password</Form.Label>
-                <Form.Control 
-                  type="password" 
-                  placeholder="Enter password" 
+                <Form.Control
+                  type="password"
+                  placeholder="Enter password"
                   className="bg-dark text-white border-secondary"
-                  value={password} 
-                  onChange={(e) => setPassword(e.target.value)} 
-                  required 
+                  {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'Password must be at least 8 characters' } })}
                 />
+                <Form.Text className="text-muted small fst-italic">
+                  {errors.password && <span className="text-danger">{errors.password.message}</span>}
+                </Form.Text>
               </Form.Group>
 
               <Button variant="primary" type="submit" className="w-100 py-2 fw-bold shadow-sm">
