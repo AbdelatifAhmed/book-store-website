@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Form, Button, Row, Col, Container, Card } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, Link } from 'react-router-dom';
-import { setCredentials } from '../../Slices/authSlices';
+import { useEffect, useState } from 'react';
+import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { setCredentials } from '../../Slices/authSlices';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

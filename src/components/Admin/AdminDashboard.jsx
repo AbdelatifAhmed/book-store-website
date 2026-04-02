@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 const AdminDashboard = () => {
     const [orders, setOrders] = useState([]);
     const [books, setBooks] = useState([]);
+    const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const { userInfo } = useSelector((state) => state.auth);
 
@@ -23,6 +24,15 @@ const AdminDashboard = () => {
             });
             const dataOrders = await resOrders.json();
             setOrders(dataOrders);
+
+            const resUsers = await fetch('http://localhost:5000/api/users/all', {
+                headers: { 'Authorization': `Bearer ${userInfo?.token}` },
+            });
+            const dataUsers = await resUsers.json();
+            console.log(dataUsers);
+            
+            setUsers(dataUsers);
+
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
@@ -69,7 +79,7 @@ const AdminDashboard = () => {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${userInfo?.token}`,
                 },
-                body: JSON.stringify({ status: newStatus }),
+                body: JSON.stringify({ status: newStatus.toLowerCase() }),
             });
 
             const data = await response.json();
@@ -190,6 +200,34 @@ const AdminDashboard = () => {
                                                 )}
                                             </div>
                                         </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </div>
+                </Tab>
+                <Tab eventKey="users" title={`Users (${users.length})`}>
+                    <div className="table-responsive bg-dark-soft p-4 rounded-4 shadow-lg border border-secondary">
+                        <Table variant="dark" hover align="middle">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Joined Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {users?.map((user) => (
+                                    <tr key={user._id}>
+                                        <td>{user.name}</td>
+                                        <td>{user.email}</td>
+                                        <td>
+                                            <Badge bg={user.role === 'admin' ? 'secondary' : 'info'}>
+                                                {user.role}
+                                            </Badge>
+                                        </td>
+                                        <td>{new Date(user.createdAt).toLocaleDateString()}</td>
                                     </tr>
                                 ))}
                             </tbody>

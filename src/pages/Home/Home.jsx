@@ -99,7 +99,6 @@ const Home = () => {
                 </Row>
             </section>
 
-            {/* --- Section 4: Newsletter (Footer Lead) --- */}
             <section className="newsletter-section py-5 my-5 text-center bg-primary rounded-4 text-white">
                 <h2 className="fw-bold">Don't Miss Out!</h2>
                 <p>Subscribe to our newsletter to get the latest updates and offers.</p>
