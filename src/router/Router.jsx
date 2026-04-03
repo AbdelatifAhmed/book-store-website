@@ -10,6 +10,7 @@ import AddBook from "../components/Admin/AddBook";
 import UpdateBook from "../components/Admin/UpdateBook";
 import BookDetails from "../pages/Books/BookDetails";
 import MyOrders from "../pages/orders/Myorder";
+import Profile from "../pages/Profile/Profile";
 const router = createBrowserRouter([
     {
         path: "/",
@@ -33,6 +34,7 @@ const router = createBrowserRouter([
             },
             { path: "books/:id", element: <BookDetails /> },
             { path: "my-orders", element: <MyOrders /> },
+            {path: "profile", element: <Profile />},
             {
                 path: "admin",
                 element: <AdminRoute />,
